@@ -6,16 +6,6 @@
 #include <regex>
 #include <algorithm>
 
-/*
-    SIZE_T _bytes_read;
-    buffer.resize(1000);
-    ReadProcessMemory(pHandle, 0x0A2C0021 - 1, &buffer[0], 1000, &_bytes_read);
-    buffer.resize(_bytes_read);
-    std::string _string = std::string(buffer.data(), buffer.size());
-    std::cout << _string << std::endl;
-    return 0;
-    */
-
 const char* stringScan(const char* windowTitle, const char* cstr_regexString) {
     std::string regexString(cstr_regexString);
 
