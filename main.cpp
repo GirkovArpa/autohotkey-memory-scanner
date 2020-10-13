@@ -38,7 +38,7 @@ const char* stringScan(const char* windowTitle, const char* cstr_regexString) {
         return "OpenProcess ERROR";
     }
 
-    unsigned char *p = NULL;
+    unsigned char* p = NULL;
     MEMORY_BASIC_INFORMATION info;
 
     int idx = 0;
@@ -74,8 +74,8 @@ const char* stringScan(const char* windowTitle, const char* cstr_regexString) {
     return "MATCH NOT FOUND";
 }
 
-int main() {
-    const char* windowTitle = "* Untitled - Notepad3 (Elevated)";
-    const char* regexString = "(!!![a-z]{5,100}!!!)";
-    std::cout << std::string(stringScan(windowTitle, regexString)) << std::endl;
+extern "C" {
+  const char* __stdcall scan(const char* windowTitle, const char* regexString) {
+      return stringScan(windowTitle, regexString);
+  }
 }
