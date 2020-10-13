@@ -16,7 +16,9 @@
     return 0;
     */
 
-std::string stringScan(LPCSTR windowTitle, std::string regexString) {
+const char* stringScan(const char* windowTitle, const char* cstr_regexString) {
+    std::string regexString(cstr_regexString);
+
     std::regex regex(regexString);
     std::vector<char> buffer;
 
@@ -24,16 +26,16 @@ std::string stringScan(LPCSTR windowTitle, std::string regexString) {
     HWND hwnd = FindWindowA(NULL, windowTitle);
 
     if (!hwnd) {
-        return "FindWindowA Error";
+        return "FindWindowA ERROR";
     }
 
     if (!GetWindowThreadProcessId(hwnd, &pID)) {
-        return "GetWindowThreadProcessId Error";
+        return "GetWindowThreadProcessId ERROR";
     }
 
     HANDLE pHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pID);
     if (!pHandle) {
-        return "OpenProcess Error";
+        return "OpenProcess ERROR";
     }
 
     unsigned char *p = NULL;
@@ -65,7 +67,7 @@ std::string stringScan(LPCSTR windowTitle, std::string regexString) {
             for (auto it = ids_begin; it != ids_end; ++it) {
                 std::smatch match = *it;
                 std::string MATCH = match[1].str();
-                return MATCH;
+                return strdup(MATCH.c_str());
             }
         }
     }
@@ -73,5 +75,7 @@ std::string stringScan(LPCSTR windowTitle, std::string regexString) {
 }
 
 int main() {
-    std::cout << stringScan("* Untitled - Notepad3 (Elevated)", "(!!![a-z]{5,100}!!!)") << std::endl;
+    const char* windowTitle = "* Untitled - Notepad3 (Elevated)";
+    const char* regexString = "(!!![a-z]{5,100}!!!)";
+    std::cout << std::string(stringScan(windowTitle, regexString)) << std::endl;
 }
